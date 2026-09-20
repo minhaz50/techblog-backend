@@ -13,7 +13,7 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
   });
 
   if (isUserExist) {
-    throw new Error("User With This Email Already Exist.");
+    throw new Error("User with this email already exist.");
   }
 
   const hashPassword = await bcrypt.hash(
@@ -26,12 +26,11 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
       name,
       email,
       password: hashPassword,
-    },
-  });
-  await prisma.profile.create({
-    data: {
-      userId: createdUser.id,
-      profilePhoto,
+      profile: {
+        create: {
+          profilePhoto,
+        },
+      },
     },
   });
 
